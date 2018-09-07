@@ -1,0 +1,28 @@
+{
+  "name": "bike-stats",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zvakanaka/bike-stats.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zvakanaka/bike-stats/issues"
+  },
+  "homepage": "https://github.com/zvakanaka/bike-stats#readme",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "i": "^0.3.6",
+    "jsdom": "^12.0.0",
+    "restify": "^7.2.1"
+  }
+}
