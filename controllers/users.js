@@ -1,7 +1,16 @@
-const model = require('../../bike-list/lib/db'); // from sibling directory
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 const { document } = (new JSDOM(``)).window;
+
+const fs = require('fs');
+function readFile(inputFile) {
+  return new Promise(function(resolve, reject) {
+    fs.readFile(inputFile, 'utf8', function (err, data) {
+      if (err) reject(err);
+     resolve(data);
+    });
+  });
+}
 
 function buildDataTable(data) {
   const tableOfData = document.createElement('table');
@@ -35,6 +44,12 @@ function buildUsersTable(users) {
   return tableOfData;
 }
 
-module.exports = function() {
-  return buildUsersTable(model.getAllUsers()).outerHTML;
+module.exports = async function() {
+  try {
+    const file = await readFile(process.env.DB_FILE);
+    return buildUsersTable(JSON.parse(file).users).outerHTML;
+  } catch (e) {
+    console.error(e);
+    return '500';
+  }
 };

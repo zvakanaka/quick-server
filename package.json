@@ -1,24 +1,22 @@
 {
-  "name": "bike-stats",
+  "name": "quick-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Serve up generated HTML",
   "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zvakanaka/bike-stats.git"
+    "url": "git+https://github.com/zvakanaka/quick-server.git"
   },
-  "author": "",
+  "author": "Adam Quinton",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/zvakanaka/bike-stats/issues"
+    "url": "https://github.com/zvakanaka/quick-server/issues"
   },
-  "homepage": "https://github.com/zvakanaka/bike-stats#readme",
+  "homepage": "https://github.com/zvakanaka/quick-server#readme",
   "dependencies": {
     "dotenv": "^6.0.0",
     "i": "^0.3.6",
