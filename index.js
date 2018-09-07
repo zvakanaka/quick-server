@@ -6,7 +6,7 @@ const controllers = {
 };
 
 function htmlGet(route, bodyCb) {
-  server.get('/users', function (req, res) {
+  server.get(route, function (req, res) {
     const body = bodyCb();
     res.writeHead(200, {
       'Content-Length': Buffer.byteLength(body),
