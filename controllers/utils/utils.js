@@ -12,6 +12,22 @@ function readFile(inputFile) {
   });
 }
 
+function htmlEntities(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function htmlSafeObj(obj) { // make values safe
+  const safeObj = {};
+  Object.entries(obj).forEach(([key, val]) => {
+    safeObj[key] = htmlEntities(val);
+  });
+  return safeObj;
+}
+
 function buildDataTable(data) {
   const tableOfData = document.createElement('table');
   const frag = document.createDocumentFragment();
@@ -43,6 +59,8 @@ function niceDate(date = new Date().valueOf()) {
 
 module.exports = {
   buildDataTable,
+  htmlEntities,
+  htmlSafeObj,
   niceDate,
   readFile
 }
