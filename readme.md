@@ -22,7 +22,7 @@ module.exports = function() {
 };
 ```
 ### Serve
-Install dependancies:
+Install dependencies:
 ```bash
 npm install
 ```

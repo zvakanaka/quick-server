@@ -27,7 +27,7 @@ function htmlGet(route, bodyCb) {
   });
 }
 
-routes.forEach(route => htmlGet(route.route, route.bodyCb));
+routes.forEach(route => htmlGet('/logz'+route.route, route.bodyCb));
 
 server.listen(process.env.PORT || 8080, function () {
   console.log('%s listening at %s', server.name, server.url);
