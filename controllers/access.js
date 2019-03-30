@@ -1,4 +1,4 @@
-const {buildDataTable, readFile} = require('./utils/utils');
+const {buildDataTable, readFile, htmlSafeObj} = require('./utils/utils');
 const { Parser } = require('@robojones/nginx-log-parser');
 const nginxSchema = '$remote_addr - $remote_user [$time_local] "$request" $status $bytes_sent "$http_referer" "$http_user_agent"';
 const nginxParser = new Parser(nginxSchema);
@@ -12,9 +12,11 @@ function buildAccessLogTable(logArr) {
     rows: logArr
       .filter(line => line)
       .map(line => {
-        const l = nginxParser.parseLine(line);
-        const geo = geoip.lookup(l.remote_addr);
-        return [`<span title="${geo.country}, ${geo.region}, ${geo.city}">${emojiCountries[geo.country]} ${geo.city}</span>`, l.time_local, l.request, `<span title="${statusCodes[l.status]}">${l.status}</span>`, l.http_referer, /*ya the dudes mispelled it*/ l.http_user_agent];
+        const notSafeNginx = nginxParser.parseLine(line);
+	const l = htmlSafeObj(notSafeNginx);
+        let geo = geoip.lookup(l.remote_addr);
+	if (!geo) geo = {country: '', region: '', city: ''};
+        return [`<span title="${geo.country}, ${geo.region}, ${geo.city}">${geo.country ? emojiCountries[geo.country] : '🌎 '} ${geo.city}</span>`, l.time_local, l.request, `<span title="${statusCodes[l.status]}">${l.status}</span>`, l.http_referer, /*ya the dudes mispelled it*/ l.http_user_agent];
       }).reverse()
   };
   const tableOfData = buildDataTable(data);
@@ -37,7 +39,7 @@ tr,
 td {
   padding: .5em .75em;
 }
-@media screen and (min-width: 10px) and (max-width: 450px) {
+@media screen and (min-width: 10px) and (max-width: 650px) {
   /* vertical display */
   table, thead, tbody, th, tr, td {
     display: block;
@@ -52,7 +54,7 @@ td {
   }
 }
 
-@media screen and (min-width: 451px) {
+@media screen and (min-width: 651px) {
   table {
     max-width: 100%;
   }
@@ -63,6 +65,7 @@ td {
         <html lang="en" dir="ltr">
           <head>
             <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>Access Logs</title>
             <style>${style}</style>
           </head>

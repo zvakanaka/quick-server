@@ -18,3 +18,14 @@ describe('Getting nice date', function() {
 function convertDateToUTC(date) { // https://stackoverflow.com/a/14006555/4151489
   return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
 }
+
+describe('htmlSafeObj', function() {
+  it('should not allow simple script tags through', function() {
+    utils.htmlSafeObj({bad: '<script>alert("hi");</script>'}).bad.should.not.equal('<script>alert("hi");</script>');
+    utils.htmlSafeObj({bad: '<script>alert("hi");</script>'}).bad.should.equal('&lt;script&gt;alert(&quot;hi&quot;);&lt;/script&gt;');
+  });
+
+  it('should work with multiple keys', function() {
+    utils.htmlSafeObj({bad: '<script>alert("hi");</script>', worst: '<b>BOLD</b>'}).worst.should.equal('&lt;b&gt;BOLD&lt;/b&gt;');
+  });
+});
