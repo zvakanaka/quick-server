@@ -3,7 +3,7 @@ const {buildDataTable, niceDate, readFile} = require('./utils/utils');
 function buildUsersTable(users) {
   const data = {
     headings: [ 'Name', 'Created' ],
-    rows: users.map(user => ([user.name, niceDate(user.created)]))
+    rows: users.map(user => ([user.name, niceDate(user.creationDate)]))
   };
   const tableOfData = buildDataTable(data);
   return tableOfData;
