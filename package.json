@@ -1,5 +1,5 @@
 {
-  "name": "quick-server",
+  "name": "mere-server",
   "version": "1.0.0",
   "description": "Serve HTML and JSON",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zvakanaka/quick-server.git"
+    "url": "git+https://github.com/zvakanaka/mere-server.git"
   },
   "author": "Adam Quinton",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zvakanaka/quick-server/issues"
+    "url": "https://github.com/zvakanaka/mere-server/issues"
   },
-  "homepage": "https://github.com/zvakanaka/quick-server#readme",
+  "homepage": "https://github.com/zvakanaka/mere-server#readme",
   "dependencies": {
     "restify": "^7.2.1",
     "restify-plugins": "^1.6.0"

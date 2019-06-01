@@ -1,12 +1,12 @@
-# Quick-Server
+# mere-server
 Serve HTML or JSON
 
-`$ npm install --save quick-server`
+`$ npm install --save mere-server`
 
 ## Hello World Server
 
 ```js
-const quickServer = require('quick-server');
+const quickServer = require('mere-server');
 
 const routes = [
   { route: '/hello-world', bodyCb: () => { return '<h1>Hello World</h1>' } },
@@ -19,5 +19,5 @@ quickServer.init(routes, { port: 8080 });
 
 Deploy with cron job:
 ```sh
-@reboot cd /home/you/path/to/your-quick-server && /home/you/.nvm/versions/node/v8.11.1/bin/node index.js 3456
+@reboot cd /home/you/path/to/your-mere-server && /home/you/.nvm/versions/node/v8.11.1/bin/node index.js 3456
 ```

@@ -19,7 +19,7 @@ function getRouteSetupFunc(route, customRouteHandlers) {
 
 function init(routes, options = {}) {
   const server = restify.createServer({
-    name: options.serverName || 'quick-server',
+    name: options.serverName || 'mere-server',
     version: options.semverVersion || '1.0.0'
   });
 
