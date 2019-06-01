@@ -1,18 +1,6 @@
-require('dotenv').config();
 const restify = require('restify');
-const server = restify.createServer({ name: process.env.SERVER_NAME || 'quick-server', version: process.env.SERVER_VERSION || '1.0.0' });
+const restifyPlugins = require('restify-plugins');
 const defaultHandlers = require('./defaultHandlers');
-
-server.on('NotFound', (req, res) => {
-  const body = `${req.method} ${req.url} Not Found`;
-  console.log(body);
-  res.writeHead(404, {
-    'Content-Length': Buffer.byteLength(body),
-    'Content-Type': 'text/html'
-  });
-  res.write(body);
-  res.end();
-});
 
 function getRouteSetupFunc(route, customRouteHandlers) {
   // the type being sent back in the response
@@ -30,10 +18,30 @@ function getRouteSetupFunc(route, customRouteHandlers) {
 }
 
 function init(routes, options = {}) {
+  const server = restify.createServer({
+    name: options.serverName || 'quick-server',
+    version: options.semverVersion || '1.0.0'
+  });
+
+  server.use(restifyPlugins.bodyParser());
+
+  server.on('NotFound', (req, res) => {
+    const body = `${req.method} ${req.url} Not Found`;
+    console.log(body);
+    res.writeHead(404, {
+      'Content-Length': Buffer.byteLength(body),
+      'Content-Type': 'text/html'
+    });
+    res.write(body);
+    res.end();
+  });
+
   const customRouteHandlers = options.routeHandlers ? options.routeHandlers : null;
   routes.forEach(route => {
     const routeSetupFunc = getRouteSetupFunc(route, customRouteHandlers);
-    routeSetupFunc(server, route.route, route.bodyCb);
+    const prefix = options.prefix ? options.prefix : '';
+    const path = `${prefix}${route.route}`;
+    routeSetupFunc(server, path, route.bodyCb);
   });
 
   server.listen(options.port || 8080, () => {
