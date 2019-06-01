@@ -47,6 +47,8 @@ function init(routes, options = {}) {
   server.listen(options.port || 8080, () => {
     console.log('%s listening at %s', server.name, server.url);
   });
+
+  return server;
 }
 
 module.exports = {

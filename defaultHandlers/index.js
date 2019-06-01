@@ -1,5 +1,5 @@
 function htmlGET(server, route, bodyCb) {
-  server.post(route, async (req, res) => {
+  server.get(route, async (req, res) => {
     console.log(req.method, req.url);
     const body = await bodyCb();
     res.writeHead(200, {
