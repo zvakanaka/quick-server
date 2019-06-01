@@ -1,41 +1,23 @@
 # Quick-Server
-Server render freshly generated HTML
+Serve HTML or JSON
 
-### Define a Route (`routes/routes.js`)
-The `bodyCb` method generates HTML - served at `route`:
+`$ npm install --save quick-server`
+
+## Hello World Server
+
 ```js
-const routesToControllers = [
-  { route: '/report', bodyCb: require('../controllers/report') }
+const quickServer = require('quick-server');
+
+const routes = [
+  { route: '/hello-world', bodyCb: () => { return '<h1>Hello World</h1>' } },
+  { route: '/users-table', bodyCb: require('./controllers/users') },
+  { route: '/add-user', bodyCb: require('./controllers/addUser'), method: 'POST', responseType: 'JSON' }
 ];
-```
 
-### Write a Controller (e.g. `controllers/report.js`)
-```js
-const model = require('../../model');
-function buildPage() {
-  const data = model.getLastReport();
-  return `<html><body>${data}</body></html>`;
-}
-
-module.exports = function() {
-  return buildPage();
-};
+quickServer.init(routes, { port: 8080 });
 ```
-### Serve
-Install dependencies:
-```bash
-npm install
-```
-
-Local development:
-```bash
-npm start
-```
-
-*Change port in `.env` with `PORT=3456`*
 
 Deploy with cron job:
 ```sh
-@reboot cd /home/you/path/to/quick-server && /home/you/.nvm/versions/node/v8.11.1/bin/node index.js 3456
+@reboot cd /home/you/path/to/your-quick-server && /home/you/.nvm/versions/node/v8.11.1/bin/node index.js 3456
 ```
-
