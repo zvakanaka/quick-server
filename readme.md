@@ -6,7 +6,7 @@ Serve HTML or JSON
 ## Hello World Server
 
 ```js
-const quickServer = require('mere-server');
+const mereServer = require('mere-server');
 
 const routes = [
   { route: '/hello-world', bodyCb: () => { return '<h1>Hello World</h1>' } },
@@ -14,7 +14,7 @@ const routes = [
   { route: '/add-user', bodyCb: require('./controllers/addUser'), method: 'POST', responseType: 'JSON' }
 ];
 
-quickServer.init(routes, { port: 8080 });
+mereServer.init(routes, { port: 8080 });
 ```
 
 Deploy with cron job:
