@@ -7,15 +7,15 @@ const debug = require('./lib/debug.js');
 
 function getRouteSetupFunc (route, customRouteHandlers) {
   // the type being sent back in the response
-  const contentType = hasOwnProperty(route, 'responseType') ? route.responseType.toLowerCase().replace(/[^\w]/g, '') : 'html';
+  const contentType = hasOwnProperty(route, 'responseType') ? route.responseType.toLowerCase() : 'text/html';
   // default to get
   const method = hasOwnProperty(route, 'method') ? route.method.toUpperCase() : 'GET';
 
-  const customHandler = customRouteHandlers && customRouteHandlers[`${contentType}${method}`] ? customRouteHandlers[`${contentType}${method}`] : null;
-  if (customHandler) return customHandler;
+  const customHandler = customRouteHandlers.find(handler => handler.method === method && handler.responseType === contentType);
+  if (customHandler && typeof customHandler.func === 'function') return customHandler.func;
 
-  const defaultHandler = defaultHandlers[`${contentType}${method}`];
-  if (defaultHandler) return defaultHandler;
+  const defaultHandler = defaultHandlers.find(handler => handler.method === method && handler.responseType === contentType);
+  if (defaultHandler && typeof defaultHandler.func === 'function') return defaultHandler.func;
 
   throw new Error(`No handler for ${contentType} ${method}`);
 }
@@ -23,7 +23,7 @@ function getRouteSetupFunc (route, customRouteHandlers) {
 function init (routes, options = {}) {
   const server = restify.createServer({
     name: options.serverName || 'mere-server',
-    version: options.semverVersion || '1.1.0'
+    version: options.semverVersion || '2.0.0'
   });
 
   server.use(restifyPlugins.bodyParser());
@@ -39,7 +39,7 @@ function init (routes, options = {}) {
     res.end();
   });
 
-  const customRouteHandlers = options.routeHandlers ? options.routeHandlers : null;
+  const customRouteHandlers = Array.isArray(options.routeHandlers) ? options.routeHandlers : [];
   routes.forEach(route => {
     const routeSetupFunc = getRouteSetupFunc(route, customRouteHandlers);
     const prefix = options.prefix ? options.prefix : '';
