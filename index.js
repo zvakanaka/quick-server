@@ -1,14 +1,17 @@
 const restify = require('restify');
 const restifyPlugins = require('restify-plugins');
-const defaultHandlers = require('./defaultHandlers');
+require('dotenv').config();
+const defaultHandlers = require('./lib/defaultHandlers');
+const hasOwnProperty = require('./lib/hasOwnProperty');
+const debug = require('./lib/debug.js');
 
-function getRouteSetupFunc(route, customRouteHandlers) {
+function getRouteSetupFunc (route, customRouteHandlers) {
   // the type being sent back in the response
-  const contentType = route.hasOwnProperty('responseType') ? route.responseType.toLowerCase() : 'html';
+  const contentType = hasOwnProperty(route, 'responseType') ? route.responseType.toLowerCase().replace(/[^\w]/g, '') : 'html';
   // default to get
-  const method = route.hasOwnProperty('method') ? route.method.toUpperCase() : 'GET';
+  const method = hasOwnProperty(route, 'method') ? route.method.toUpperCase() : 'GET';
 
-  const customHandler = customRouteHandlers ? customRouteHandlers[contentType] && customRouteHandlers[contentType][method] : null;
+  const customHandler = customRouteHandlers && customRouteHandlers[`${contentType}${method}`] ? customRouteHandlers[`${contentType}${method}`] : null;
   if (customHandler) return customHandler;
 
   const defaultHandler = defaultHandlers[`${contentType}${method}`];
@@ -17,17 +20,17 @@ function getRouteSetupFunc(route, customRouteHandlers) {
   throw new Error(`No handler for ${contentType} ${method}`);
 }
 
-function init(routes, options = {}) {
+function init (routes, options = {}) {
   const server = restify.createServer({
     name: options.serverName || 'mere-server',
-    version: options.semverVersion || '1.0.0'
+    version: options.semverVersion || '1.1.0'
   });
 
   server.use(restifyPlugins.bodyParser());
 
   server.on('NotFound', (req, res) => {
     const body = `${req.method} ${req.url} Not Found`;
-    console.log(body);
+    debug(body);
     res.writeHead(404, {
       'Content-Length': Buffer.byteLength(body),
       'Content-Type': 'text/html'
@@ -45,7 +48,7 @@ function init(routes, options = {}) {
   });
 
   server.listen(options.port || 8080, () => {
-    console.log('%s listening at %s', server.name, server.url);
+    debug('%s listening at %s', server.name, server.url);
   });
 
   return server;

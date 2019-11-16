@@ -1,9 +1,10 @@
 {
   "name": "mere-server",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Serve HTML and JSON",
   "main": "index.js",
   "scripts": {
+    "lint": "npx semistandard \"**/*[!.test].js\" --fix",
     "test": "mocha",
     "start": "node index.js"
   },
@@ -18,11 +19,13 @@
   },
   "homepage": "https://github.com/zvakanaka/mere-server#readme",
   "dependencies": {
-    "restify": "^7.2.1",
+    "dotenv": "^8.2.0",
+    "restify": "^8.4.0",
     "restify-plugins": "^1.6.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "semistandard": "^14.2.0"
   }
 }
